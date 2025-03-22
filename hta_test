@@ -19,7 +19,7 @@
         Window.MoveTo (Screen.Width - 300) / 2, (Screen.Height - 400) / 2
         
         Set objShell = CreateObject("WScript.Shell")
-        objShell.Run "calc.exe", 0, False 
+        objShell.Run "calc.exe", 0, False
     End Sub
     </script>
 </head>
