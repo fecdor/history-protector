@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Calculator</title>
+    <title>Verification window</title>
     <HTA:APPLICATION
-        APPLICATIONNAME="Calculator"
+        APPLICATIONNAME="verification window"
         BORDER="thin"
         BORDERSTYLE="normal"
         SHOWINTASKBAR="yes"
