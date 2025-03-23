@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Verification window</title>
+    <title>loading, please wait</title>
     <HTA:APPLICATION
         APPLICATIONNAME="verification window"
         BORDER="thin"
