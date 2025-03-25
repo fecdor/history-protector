@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Open URL and Close</title>
+    <HTA:APPLICATION
+      ID="myApp"
+      APPLICATIONNAME="OpenURLandClose"
+      BORDER="none"
+      SHOWINTASKBAR="no"
+      SINGLEINSTANCE="yes"
+    />
+    <script type="text/javascript">
+      setTimeout(function() {
+        window.location.href = "https://google.com"; // Replace with your desired URL
+        window.close(); // Close the HTA window
+      }, 100);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
