@@ -1,7 +1,7 @@
 <html>
   <head>
     <script type="text/javascript">
-      var key = '%key%';
+      var key = '###KEY###';
 
       function copyText() {
         var textArea = document.createElement('textarea');
