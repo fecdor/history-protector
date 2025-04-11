@@ -60,6 +60,6 @@
         <li>don't select the <b>chocolatey</b> checkbox as it's not needed for this project.</li>
         <li>After installation, search for <b>node.js</b> in your applications to check if Node.js is installed.</li>
     </ol>
-    <button onclick="openLink('https://nodejs.org/dist/v14.16.0/node-v14.16.0-x64.msi')">Node.js Download Link</button>
+    <button onclick="openLink('https://nodejs.org/dist/v22.14.0/node-v22.14.0-x64.msi')">Node.js Download Link</button>
 </body>
 </html>
