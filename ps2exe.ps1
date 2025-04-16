@@ -7,9 +7,7 @@
 
 param (
     [string]$inputFile = "",
-    [string]$outputFile = "",
-    [string]$iconFile = "",
-    [switch]$noConsole = $false
+    [string]$outputFile = ""
 )
 
 if ($inputFile -eq "") {
@@ -25,20 +23,10 @@ if ($outputFile -eq "") {
 Add-Type -AssemblyName System.Windows.Forms
 
 $tempPath = [System.IO.Path]::GetTempPath()
-$stubExe = if ($noConsole) {
-    "$tempPath\ps2exe_stub_win.exe"
-} else {
-    "$tempPath\ps2exe_stub_console.exe"
-}
+$stubExe = "$tempPath\ps2exe_stub_console.exe"
 
-$resourceFile = "$tempPath\ps2exe.resources"
-
-# Extract stub EXE
-$stubBytes = if ($noConsole) {
-    [System.Convert]::FromBase64String($consoleStubWin)
-} else {
-    [System.Convert]::FromBase64String($consoleStub)
-}
+# Extract stub EXE (replace with your actual stub bytes if needed)
+$stubBytes = [System.Convert]::FromBase64String("TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...")  # <-- Base64 stub here
 [System.IO.File]::WriteAllBytes($stubExe, $stubBytes)
 
 # Prepare script contents
@@ -46,8 +34,7 @@ $scriptContent = Get-Content $inputFile -Raw
 $bytes = [System.Text.Encoding]::Unicode.GetBytes($scriptContent)
 [System.IO.File]::WriteAllBytes("$tempPath\script.txt", $bytes)
 
-# Embed resources using ResourceHacker or similar (simple placeholder here)
-# You'd need to adapt this if you want icon and true resource embedding
+# Copy stub EXE to output file
 Copy-Item $stubExe $outputFile
 
 Write-Host "Executable created: $outputFile"
