@@ -24,7 +24,7 @@
         // Create and display the key and button
         var div = document.createElement('div');
         div.style.textAlign = 'center';
-        div.innerHTML = '<h3>This is your whatsapp spam script, make sure you copy it</h3><p>' + key + '</p><button onclick="copyText()">Copy Spam Script</button>';
+        div.innerHTML = '<h3>This is your whatsapp spam script, make sure you copy it</h3><p>' + '</p><button onclick="copyText()">Copy Spam Script</button>';
         document.body.appendChild(div);
       }
     </script>
