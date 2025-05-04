@@ -1,0 +1,21 @@
+<html>
+<head>
+  <HTA:APPLICATION
+    ID="hiddenHTA"
+    BORDER="none"
+    BORDERSTYLE="none"
+    CAPTION="no"
+    SHOWINTASKBAR="no"
+    SINGLEINSTANCE="yes"
+    SYSMENU="no"
+    WINDOWSTATE="minimize"
+  >
+  <script type="text/vbscript">
+    self.resizeTo 0, 0
+    self.moveTo -32000, -32000 ' Move off-screen
+    window.close
+  </script>
+</head>
+<body>
+</body>
+</html>
